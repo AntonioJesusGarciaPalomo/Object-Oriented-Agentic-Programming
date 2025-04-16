@@ -23,18 +23,27 @@ OOAP integrates seamlessly with the Model Context Protocol (MCP), allowing agent
 
 ```bash
 pip install ooap-sdk
+```
+
 Or install directly from the repository:
-bashpip install git+https://github.com/yourusername/ooap-sdk.git
-🧩 Architecture
+
+```bash
+pip install git+https://github.com/yourusername/ooap-sdk.git
+```
+
+## 🧩 Architecture
+
 OOAP SDK implements the following layers:
 
-Agent Core: Base classes defining fundamental agent capabilities
-Memory Systems: Short-term and long-term memory implementations
-LLM Integration: Interfaces to language models via MCP and other APIs
-Validation: Type system and validation based on Pydantic
-Orchestration: Tools for coordinating multi-agent systems
+1. **Agent Core**: Base classes defining fundamental agent capabilities
+2. **Memory Systems**: Short-term and long-term memory implementations
+3. **LLM Integration**: Interfaces to language models via MCP and other APIs
+4. **Validation**: Type system and validation based on Pydantic
+5. **Orchestration**: Tools for coordinating multi-agent systems
 
-Agent Class Diagram
+### Agent Class Diagram
+
+```
 ┌─────────────────┐       ┌─────────────────┐
 │ Agent<T>        │       │ AgentEnvironment │
 ├─────────────────┤       ├─────────────────┤
@@ -66,19 +75,23 @@ Agent Class Diagram
                           │ get()           │
                           │ search()        │
                           └─────────────────┘
-💡 Key Features
+```
 
-Declarative agent definitions as Python classes
-Internal state management with short and long-term memory
-Model Context Protocol (MCP) integration for resources and tools access
-Input and output validation with Pydantic
-Inter-agent communication through well-defined interfaces
-Support for agent inheritance and polymorphism
-Multi-agent system orchestration
-Standardized LLM interaction patterns
+## 💡 Key Features
 
-🔍 Basic Usage
-pythonfrom ooap import Agent, AgentMeta
+- **Declarative agent definitions** as Python classes
+- **Internal state management** with short and long-term memory
+- **Model Context Protocol (MCP) integration** for resources and tools access
+- **Input and output validation** with Pydantic
+- **Inter-agent communication** through well-defined interfaces
+- **Support for agent inheritance and polymorphism**
+- **Multi-agent system orchestration**
+- **Standardized LLM interaction** patterns
+
+## 🔍 Basic Usage
+
+```python
+from ooap import Agent, AgentMeta
 from ooap.memory import ShortTermMemory, LongTermMemory
 from pydantic import BaseModel, Field
 from typing import List
@@ -115,9 +128,14 @@ class AnalystAgent(Agent[AnalysisResult], metaclass=AgentMeta):
         """Method exposed as a tool for the agent"""
         # The agent can call this method
         return [f"Reference about '{query}'", "Another relevant reference"]
-🔮 Advanced Examples
-Multi-Agent System
-pythonfrom ooap import AgentSystem
+```
+
+## 🔮 Advanced Examples
+
+### Multi-Agent System
+
+```python
+from ooap import AgentSystem
 from ooap.agents import ResearchAgent, AnalystAgent, SummaryAgent
 
 # Create a system with multiple specialized agents
@@ -138,8 +156,12 @@ result = await system.process_task(
 # Generate a final summary
 summary = await system.agents["Summarizer"].think(str(result))
 print(summary)
-Agent Inheritance
-pythonfrom ooap import ContentAgent
+```
+
+### Agent Inheritance
+
+```python
+from ooap import ContentAgent
 
 # Base class for content agents
 class MarketingAgent(ContentAgent):
@@ -164,10 +186,16 @@ class SocialMediaAgent(MarketingAgent):
             return f"{content}\n\n#branded #campaign #{self.name}"
         else:
             return content
-🧠 LLM Integration
+```
+
+## 🧠 LLM Integration
+
 OOAP SDK provides integration with different models through:
-MCP (Model Context Protocol)
-pythonfrom ooap import MCPPoweredAgent
+
+### MCP (Model Context Protocol)
+
+```python
+from ooap import MCPPoweredAgent
 from ooap.llm import MCPProvider
 
 # Create an agent using MCP to communicate with LLMs
@@ -182,8 +210,12 @@ agent = MCPPoweredAgent(
 
 # The agent will use MCP to access the LLM
 result = await agent.think("Analyze these quarterly financial results")
-Other Providers
-pythonfrom ooap.llm import OpenAIProvider, AnthropicProvider, LocalLLMProvider
+```
+
+### Other Providers
+
+```python
+from ooap.llm import OpenAIProvider, AnthropicProvider, LocalLLMProvider
 
 # OOAP supports multiple LLM providers
 openai_agent = MCPPoweredAgent(
@@ -200,9 +232,14 @@ local_agent = MCPPoweredAgent(
     name="LocalAgent",
     llm_provider=LocalLLMProvider(model_path="/path/to/local/model")
 )
-📊 Memory Systems
+```
+
+## 📊 Memory Systems
+
 OOAP provides various memory implementations:
-pythonfrom ooap.memory import VectorMemory, SQLiteMemory, RedisMemory
+
+```python
+from ooap.memory import VectorMemory, SQLiteMemory, RedisMemory
 
 # Vector memory for semantic search
 agent_with_vector_memory = AnalystAgent(
@@ -224,10 +261,16 @@ distributed_agent = AnalystAgent(
     expertise="real-time analysis",
     long_term_memory=RedisMemory(redis_url="redis://localhost:6379")
 )
-🔄 Core Classes and Components
-Agent Base Class
-The foundation of OOAP is the Agent class:
-pythonclass Agent(Generic[T]):
+```
+
+## 🔄 Core Classes and Components
+
+### Agent Base Class
+
+The foundation of OOAP is the `Agent` class:
+
+```python
+class Agent(Generic[T]):
     """Base class for all OOAP agents"""
     
     def __init__(
@@ -245,9 +288,14 @@ pythonclass Agent(Generic[T]):
         self.long_term_memory = LongTermMemory()
         self.environment = AgentEnvironment()
         self.mcp = mcp_server or FastMCP(f"Agent-{name}")
-AgentMeta Metaclass
+```
+
+### AgentMeta Metaclass
+
 The metaclass that handles validation and type checking:
-pythonclass AgentMeta(type):
+
+```python
+class AgentMeta(type):
     """Metaclass for agent classes that sets up automatic validation"""
     
     def __new__(mcs, name, bases, attrs):
@@ -276,7 +324,11 @@ pythonclass AgentMeta(type):
                     attrs[attr_name] = create_validated_method(original_method, output_model)
         
         return super().__new__(mcs, name, bases, attrs)
-🚧 Project Structure
+```
+
+## 🚧 Project Structure
+
+```
 ooap-sdk/
 ├── ooap/
 │   ├── __init__.py
@@ -316,10 +368,16 @@ ooap-sdk/
 ├── setup.py               # Package setup
 ├── LICENSE                # MIT License
 └── README.md              # This file
-🛠️ Contributing
+```
+
+## 🛠️ Contributing
+
 Contributions are welcome! Please read through our contribution guidelines before submitting a PR.
-Development Environment Setup
-bash# Clone the repository
+
+### Development Environment Setup
+
+```bash
+# Clone the repository
 git clone https://github.com/yourusername/ooap-sdk.git
 cd ooap-sdk
 
@@ -330,24 +388,28 @@ pip install -e ".[dev]"
 
 # Run tests
 pytest
-Contribution Guidelines
+```
 
-Fork the repository
-Create a feature branch: git checkout -b feature-name
-Commit your changes: git commit -m 'Add some feature'
-Push to the branch: git push origin feature-name
-Open a Pull Request
+### Contribution Guidelines
 
-📄 License
-This project is licensed under the MIT License - see the LICENSE file for details.
-🙏 Acknowledgments
+1. Fork the repository
+2. Create a feature branch: `git checkout -b feature-name`
+3. Commit your changes: `git commit -m 'Add some feature'`
+4. Push to the branch: `git push origin feature-name`
+5. Open a Pull Request
 
-Thanks to the MCP community for providing the infrastructure for LLM integration
-To all contributors and testers who make this project possible
-The Python community for the amazing tools and libraries that make this project possible
+## 📄 License
 
-📚 Further Reading
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
-Model Context Protocol Documentation
-Agent-Based Software Engineering
-Object-Oriented Programming Principles
+## 🙏 Acknowledgments
+
+- Thanks to the MCP community for providing the infrastructure for LLM integration
+- To all contributors and testers who make this project possible
+- The Python community for the amazing tools and libraries that make this project possible
+
+## 📚 Further Reading
+
+- [Model Context Protocol Documentation](https://modelcontextprotocol.io)
+- [Agent-Based Software Engineering](https://en.wikipedia.org/wiki/Agent-based_model)
+- [Object-Oriented Programming Principles](https://en.wikipedia.org/wiki/Object-oriented_programming)
