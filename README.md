@@ -2,7 +2,7 @@
 
 [![PyPI version](https://img.shields.io/pypi/v/ooap-sdk.svg)](https://pypi.org/project/ooap-sdk/)
 [![Python Version](https://img.shields.io/pypi/pyversions/ooap-sdk.svg)](https://pypi.org/project/ooap-sdk/)
-[![License](https://img.shields.io/github/license/yourusername/ooap-sdk.svg)](https://github.com/yourusername/ooap-sdk/blob/main/LICENSE)
+[![License](https://img.shields.io/github/license/yourusername/ooap-sdk.svg)](https://github.com/AntonioJesusGarciaPalomo/ooap-sdk/blob/main/LICENSE)
 
 **OOAP SDK** introduces a novel paradigm: **Object Oriented Agentic Programming**. This framework combines object-oriented programming principles with LLM-based AI agents, enabling the creation of robust, maintainable, and scalable multi-agent systems.
 
@@ -28,7 +28,7 @@ pip install ooap-sdk
 Or install directly from the repository:
 
 ```bash
-pip install git+https://github.com/yourusername/ooap-sdk.git
+pip install git+https://github.com/AntonioJesusGarciaPalomo/ooap-sdk.git
 ```
 
 ## 🧩 Architecture
